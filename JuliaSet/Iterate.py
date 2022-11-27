@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 # import pygame
  #250 for testing time  
 thresh1 = 3
-thresh2 = 3
+thresh2 = 6
 
 
 #for 4k size
@@ -29,9 +29,8 @@ constplane = 800 #800 is a good value to use for 1kx1k (scale up by whatever you
 def iterate(z: complex, c: complex, i, accuracy, precision, step,mapp, count: int =0) -> complex:
     oldsave = mapp[i:i+step,:]
     #boolean index this thing below for every value that does not equal -1
-    # mask = (mapp[i:i+step,:] == 0)
-    # zf = z**2 + c
-    # z[mask] = zf[mask]
+    # mask = (z < complex(thresh2,thresh2))
+    # z[mask] = z[mask]**2 + c
     # np.putmask(z,mask, z**2 + c)
 
     z = z**2 + c
@@ -43,9 +42,10 @@ def iterate(z: complex, c: complex, i, accuracy, precision, step,mapp, count: in
 
     mask2 = (np.absolute(z) > complex(thresh2,thresh2))
     mask3 = (mapp[i:i+step,:] == 0)
+    
     if (count < accuracy):
         mapp[i:i+step,:][mask2 & mask3] = count
-    if (count == accuracy):
+    elif (count == accuracy):
         mapp[i:i+step,:][mask3] = accuracy
     # mapp[i,:][np.absolute(z) > complex(thresh2,thresh2)] = count
     newsave = mapp[i:i+step,:]
@@ -82,12 +82,11 @@ def runJulia(size1,size2, accuracy, step, precision, c, mapp):
         # counter = counter +1 
         # print(np.round((counter/totalprogress)*100,1),"%")
     fig, ax = plt.subplots()
-    plt.imshow(mapp,cmap= plt.cm.bone)
-    ax.invert_yaxis()
+    plt.imshow(mapp,cmap= plt.cm.magma)
+    ax.invert_yaxis()   
     plt.axis('off')
 
 # cmap = plt.cm.magma bone RdBu
 # cmap.set_under(0)
 # cmap.set_over(accuracy)
 # rgba = cmap(145)
-
