@@ -12,6 +12,8 @@ from sympy import lambdify, symarray
 from sympy.plotting import plot
 
 
+## 2-3 Hours
+
 
 # def iterate(x, func):
 #     xn1 = 

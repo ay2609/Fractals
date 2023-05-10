@@ -1,64 +1,125 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import sympy as sym
-from mpmath import *
-from numpy import *
-from sympy import *
- 
-def iterate(x):
-    xn1 = x - ((x**2+1)/(2*x))
-    xn1 = simplify(xn1)
-    xn1 = xn1.round(2)
-    # print(xn1)
-    return xn1
+import sympy
+import time
+import cmasher as cmr
+# import pygnuplot
 
-def round_complex(x):
-    x = complex(x)
-    return complex(round(x. real,2),round(x.imag,2))
-# https://math.stackexchange.com/questions/2778959/newton-raphson-method-for-complex-numbers
- 
-r1, r2 = -1*I, 1*I
+## 7-10 Hours
 
-z = Symbol('z')
-y1 = (z**2 + 1)
-y2 = diff(y1) #derivative of x**2
- 
-#plan is to go from -25 to 25 in terms of real plane, -25i to 25i in imaginary plane, step by .1, 500x500 values
-arr = zeros((100, 100))
- 
-# --- PLOTTING --- #
-#need this below to index the array, create seperate values for each point and add a counter inside for em
- 
-for xx in range(100):
-    x = -10 + 20 * xx/100
-    # if xx % 20 == 0:
-    print(f"{xx}/100")
-    for yy in range(100):
-        y = -10 + 20 * yy/100
-       
-        if x != 0 or y != 0: # avoid (0,0)
-            p = x + y*I
-            for i in range(16):
-                p = iterate(p)
-                
-                # if i % 5 == 0:
-                    # print(f"{i}/15")
-           
-            p = round_complex(p)
-            # print(p)
+disp = 0
 
-            if r1 - p == 0:
-                arr[xx][yy] = 1
-                # print("I'm 1")
-            elif r2 - p == 0:
-                arr[xx][yy] = 2
-                # print("I'm 2")
-    # print(p)
+size = 2000
+precision = 50
+plane = 0.75
+accuracy = 750
+PLANE_X = 1.25
+PLANE_Y = 1.25
+step = int(20000/size)
 
-plt.imshow(arr.transpose())
-plt.axis('off')
+x = sympy.symbols('x')
+
+# solutions = sympy.solve(5*x**7  + 3*x**5 - 27*x**2 + 365,x)
+# solutions = sympy.solve(x**3 -  1,x)
+solutions = sympy.solve(x**5 + 1,x) 
+
+for i in range(np.shape(solutions)[0]):
+    solutions[i] = sympy.simplify(solutions[i])
+    solutions[i] = complex(solutions[i].evalf())
+solutions = np.round(solutions,7)
+
+
+
+
+
+if step < 1:
+    step = 1
+
+
+
+
+map = np.zeros((size, size), dtype=int)
+fmap = np.zeros((size, size), dtype=int)
+outputs = np.zeros((size,size),dtype=complex)
+
+def iterate(x: complex, accuracy, i,step,count: int =0,) -> complex:
+    old_save = map[i:i+step,:]
+
+    # xn1 = np.round((x - ((6*x**3 - 3*x**2 + 12*x + 6)/(18*x**2 - 6*x + 12))),precision)
+    # xn1 = np.round((x- ((x**3-1)/(3*x**2))),precision)
+    xn1 = np.round((x- ((x**5+1)/(5*x**4))),precision)
+    # xn1 = (x - (f(x))/(f2(x))).round(precision)
+
+    # xn1 = np.round(x - (5*x**7  + 3*x**5 - 27*x**2 + 365)/(35*x**6  + 15*x**4 - 54*x),precision)
+
+    
+    
+    new_save = map[i:i+step,:]
+
+    mask_1 = map[i:i+step,:]==0
+    mask_a = np.isclose(xn1-solutions[0],0,atol=0.000015)
+    map[i:i+step,:][mask_a & mask_1] = count
+    mask_b = np.isclose(xn1-solutions[1],0,atol=0.000015)
+    map[i:i+step,:][mask_b & mask_1] = count
+    mask_c = np.isclose(xn1-solutions[2],0,atol=0.000015)
+    map[i:i+step,:][mask_c & mask_1] = count
+    mask_d = np.isclose(xn1-solutions[3],0,atol=0.000015)
+    map[i:i+step,:][mask_d & mask_1] = count
+    mask_e = np.isclose(xn1-solutions[4],0,atol=0.000015)
+    map[i:i+step,:][mask_e & mask_1] = count
+    
+
+
+    if count % 2 == 0:
+        if all(new_save[old_save == new_save]) == True:
+            return xn1
+
+    if count == accuracy:
+        return xn1
+   
+    return (iterate(xn1, accuracy,i, step,count+1))
+ 
+
+def run(size, accuracy, step, precision, mapp):
+    """
+    Generate a grid of complex numbers and iterate the Julia set function on it.
+    """
+    # Create a grid of complex numbers
+    x = np.round(np.linspace(-(PLANE_X) + disp, (PLANE_X) + disp, size, dtype=complex), precision)
+    y = np.round(np.linspace(-(PLANE_Y)*1j, (PLANE_Y)*1j, size, dtype=complex), precision)
+    inputs = x + y[:, np.newaxis]
+   
+    #############################################thread here##############################
+
+    # Create an AxesImage object and initialize it with the data in the grid
+
+    # Iterate the Julia set function on the grid
+    
+    for i in range(0, size, step):
+        outputs[i:i+step,:] = iterate(inputs[i:i+step,:], accuracy, i, step)
+
+
+    fig, ax = plt.subplots()
+
+    cmaplist = ('cmr.ember','cmr.bubblegum','cmr.gem','cmr.horizon','cmr.tropical','cmr.savanna','cmr.gothic')
+
+    for i in range(np.shape(solutions)[0]):
+        mask = np.isclose(outputs-solutions[i],0,atol=0.000015)
+        fmap[mask] = i
+        map1 = np.ma.masked_array(map, fmap!=i)
+        # cmap = plt.get_cmap(cmaplist[i])
+        cmap = plt.get_cmap('inferno')
+        ax.imshow(map1,cmap=cmap,interpolation='none')
+    
+    ax.invert_yaxis() 
+    plt.axis('off')
+
+
+start_time = time.time()
+print("----------\nsize: {} \nstep: {} \naccuracy: {} \nprecision: {}".format(size,step,accuracy,precision)) 
+run(size, accuracy, step, precision, map)
+print("--- %s seconds ---" % np.round((time.time() - start_time),2))
+
+# plt.savefig('FractalPics/X5_2',dpi=1000,bbox_inches='tight',pad_inches=0)
+5
 plt.show()
- 
- 
- 
- 

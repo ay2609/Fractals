@@ -3,6 +3,9 @@ import numpy as np
 import time
 from Iterate import *
 import warnings
+# import h5py
+
+# f = h5py.File('mapp.hdf5','w')
 
 from xlwt import Workbook
 
@@ -24,18 +27,22 @@ warnings.filterwarnings("ignore")
 
 
 
-size1 = 1000 #y
-size2 = 1000 #x
-precision = 250
-accuracy = 100
+size1 = 200 #y
+size2 = 200 #x
+precision = 10
+accuracy = 500
 mapp = np.zeros((size1, size2),dtype=int)  
 
-
-
-# c1 = -0.76 + 0.0838j
-# c1 = -0.8 + 0.156j
-# c1 = -0.624 + 0.435j
-c1 = -0.512511498387847167 + 0.521295573094847167j
+# c1 = 0 + 0j
+# c1 = 0.25 + 0j
+# c1 = 0 + 1j 
+# c1 = -0.74-0.11j # no
+# c1 = -0.74543 + 0.11301j #no
+# c1 = -0.11+0.65569999j # yes
+# c1 = -0.76 + 0.0838j # yes
+# c1 = -0.8 + 0.156j #yes
+c1 = -0.624 + 0.435j #yes #prisonah
+# c1 = -0.512511498387847167 + 0.521295573094847167j # yes
 # c1 = .716 + .911j
 # c1 = -0.222 - .677j
 # c1 = -1 + 1j
@@ -47,7 +54,11 @@ c1 = -0.512511498387847167 + 0.521295573094847167j
 # elif size1 > 2500:
 #     step = 10
 
-step = int(20000/size2)
+step = int(15000/size2)
+# step = 1
+if step < 1:
+    step = 1
+# step = size1
 # step = 100
 # step = 200 
 # step = 300
@@ -113,9 +124,14 @@ step = int(20000/size2)
             
     
 start_time = time.time()
-print("----------\nsize1: {} \nsize2: {} \nplaneconst: {} \nstep: {} \naccuracy: {} \nprecision: {}".format(size1,size2,constplane,step,accuracy,precision))
-runJulia(size1,size2, accuracy, step, precision, c1, mapp)
+print("----------\nsize1: {} \nsize2: {} \nstep: {} \naccuracy: {} \nprecision: {}".format(size1,size2,step,accuracy,precision))
+run(size1, size2, accuracy, step, precision, c1, mapp)
 print("--- %s seconds ---" % np.round((time.time() - start_time),2))
+# print(mapp[0,0])
+
+np.save('mapp.npy',mapp)
+
+plt.savefig('FractalPics/Julia_5_5',dpi=1000,bbox_inches='tight',pad_inches=0)
 
 plt.show()
 

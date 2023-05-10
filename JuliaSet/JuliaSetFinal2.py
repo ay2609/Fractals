@@ -30,16 +30,16 @@ warnings.filterwarnings("ignore")
 size1 = 1000 #y
 size2 = 1000 #x
 precision = 100
-accuracy = 200
+accuracy = 150
 mapp = np.zeros((size1, size2), dtype=int)  
 
 
-
+c1 = 0 + 0j
 # c1 = -0.76 + 0.0838j
 # c1 = -0.8 + 0.156j
 # c1 = -0.624 + 0.435j
 # c1 = .28 + 0.008j #good one
-c1 = -0.512511498387847167 + 0.521295573094847167j
+# c1 = -0.512511498387847167 + 0.521295573094847167j
 # c1 = .716 + .911j
 # c1 = -0.222 - .677j
 # c1 = -1 + 1j
