@@ -17,7 +17,7 @@ inputs = x + y[:, np.newaxis]
 vector = np.vectorize(cmath.isclose)
 # mapp[vector((np.imag(inputs)**2 + np.real(inputs)**2 - 1),0,rel_tol=0.00155,abs_tol=0.00155)] = 1
 mapp[vector((np.imag(inputs)**2 + np.real(inputs)**2 - 1),0,rel_tol=0.02,abs_tol=0.02)] = 1
-np.save('mapp.npy',mapp)
+np.save('mapp.npy', mapp)
 fig,ax = plt.subplots()
 
 # mapp[234,:] = 1

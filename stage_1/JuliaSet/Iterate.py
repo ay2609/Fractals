@@ -7,7 +7,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-import cmasher as cmr
 
 THRESHOLD = 2
 

@@ -1,6 +1,5 @@
 # import matplotlib.pyplot as plt
 # import matplotlib.animation as animation
-# from numpy import complex, array
 
 # # Create a figure and set the limits of the x and y axes
 # fig = plt.figure()

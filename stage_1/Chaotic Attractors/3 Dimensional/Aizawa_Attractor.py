@@ -26,8 +26,8 @@ ax = plt.figure().add_subplot(projection='3d')
 # print(xyzs.T)
 
 ax.plot(*XYZ.T, '.',color='cyan',markersize=0.025)
-ax.set_facecolor('black')
-ax.axis('off')
+# ax.set_facecolor('black')
+# ax.axis('off')
 ax.set_title("Aizawa Attractor")
 
 plt.show()

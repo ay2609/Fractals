@@ -32,7 +32,7 @@ arr = np.zeros((500, 500))
 for n in range(500):
     x = -10 + 20 * n/500
     if n % 20 == 0:
-        print("{n}/500")
+        print(f"{n}/500")
     for m in range(500):
         y = -10 + 20 * m/500
         # print(x)

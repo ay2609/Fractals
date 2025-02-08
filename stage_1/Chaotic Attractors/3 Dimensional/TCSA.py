@@ -70,7 +70,7 @@ XYZ = XYZ.T
 # ax.add_collection(line_segments)
 
 ax.scatter(*XYZ,color=colors,s=0.01)
-ax.set_facecolor('black')
+# ax.set_facecolor('black')
 
 # ax.plot(*XYZ,color='cyan',lw=0.5)
 # ax.plot(XYZ[0,:],XYZ[1,:],XYZ[2,:],color=colors[0])
@@ -83,7 +83,7 @@ ax.set_facecolor('black')
 # ax.set_ylabel("Y Axis")
 # ax.set_zlabel("Z Axis")
 
-ax.axis('off')
+# ax.axis('off')
 # ax.set_facecolor('black')
 ax.set_title("Thomas’ Cyclically Symmetric Attractor")
 

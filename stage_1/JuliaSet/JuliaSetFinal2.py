@@ -4,13 +4,13 @@ import time
 from IterateUpdate import *
 import warnings
 
-from xlwt import Workbook
-
-wb = Workbook()
-sheet1 = wb.add_sheet('Sheet 1')
-
-warnings.filterwarnings("ignore")
-# with open('data.txt','w') as f:
+# from xlwt import Workbook
+#
+# wb = Workbook()
+# sheet1 = wb.add_sheet('Sheet 1')
+#
+# warnings.filterwarnings("ignore")
+# # with open('data.txt','w') as f:
 #     f.write("\n")
 
 

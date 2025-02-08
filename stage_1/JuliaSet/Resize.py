@@ -60,5 +60,5 @@ plt.axis('off')
 ax.invert_yaxis()
 plt.show()
 
-np.save('mapp.npy',mapp)
+np.save('mapp.npy', mapp)
 

@@ -27,8 +27,8 @@ warnings.filterwarnings("ignore")
 
 
 
-size1 = 200 #y
-size2 = 200 #x
+size1 = 1000 #y
+size2 = 1000 #x
 precision = 10
 accuracy = 500
 mapp = np.zeros((size1, size2),dtype=int)  
@@ -38,7 +38,7 @@ mapp = np.zeros((size1, size2),dtype=int)
 # c1 = 0 + 1j 
 # c1 = -0.74-0.11j # no
 # c1 = -0.74543 + 0.11301j #no
-# c1 = -0.11+0.65569999j # yes
+c1 = -0.11+0.65569999j # yes
 # c1 = -0.76 + 0.0838j # yes
 # c1 = -0.8 + 0.156j #yes
 c1 = -0.624 + 0.435j #yes #prisonah
@@ -129,9 +129,9 @@ run(size1, size2, accuracy, step, precision, c1, mapp)
 print("--- %s seconds ---" % np.round((time.time() - start_time),2))
 # print(mapp[0,0])
 
-np.save('mapp.npy',mapp)
+np.save('mapp.npy', mapp)
 
-plt.savefig('FractalPics/Julia_5_5',dpi=1000,bbox_inches='tight',pad_inches=0)
+# plt.savefig('FractalPics/Julia_5_5',dpi=1000,bbox_inches='tight',pad_inches=0)
 
 plt.show()
 
